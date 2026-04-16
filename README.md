@@ -1,19 +1,42 @@
-# ⚔️ Irrumbu Kottai Pallupudingi ⚔️
-### *A Premium 2D Action-Platformer Experience*
-
-![Project Banner](game_banner_1775805132343.png)
+<div align="center">
+  <h1>⚔️ Irrumbu Kottaai Pallupudingi ⚔️</h1>
+  <h3><i>A Premium 2D Action-Platformer Experience</i></h3>
+  <br>
+  <img src="snapshots/mazes.png" alt="Project Banner" width="100%" style="border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">
+  <br><br>
+  <p>
+    <img src="https://img.shields.io/badge/Made%20with-Godot%204-478CBF?style=for-the-badge&logo=godotengine&logoColor=white" alt="Godot Engine">
+    <img src="https://img.shields.io/badge/Language-GDScript-355570?style=for-the-badge" alt="GDScript">
+  </p>
+</div>
 
 ---
 
 ## 📜 Project Overview
-**Irrumbu Kottai Pallupudingi** is a high-octane 2D action platformer built with Godot. It features responsive character controls, challenging AI enemies, and an epic multi-phase boss fight. This README serves as a technical walkthrough of the core algorithms and game workflows.
+**Irrumbu Kottai Pallupudingi** is a high-octane 2D action platformer built with Godot. It features responsive character controls, challenging AI enemies, and an epic multi-phase boss fight. This README serves as an interactive technical walkthrough of the core algorithms and game workflows. Use the interactive sections below to expand and explore the logic under the hood!
+
+<details>
+<summary><b>✨ View Aesthetic Highlights</b></summary>
+<br>
+
+* 🎨 **Gradients & Polish:** Every character UI uses dynamic shaders and HSL-tailored health bars.
+* 💧 **Liquid UI:** Death screens and menus feature smooth tweens and fade transitions.
+* ✨ **Micro-Animations:** Skeleton enemies "respawn" with a custom animation before entering their AI loop.
+
+</details>
 
 ---
 
-## 🏃 Character Movement Algorithms
+## 🏃‍♂️ Combat & Mechanics Algorithms
 
-### 1. Heroic Player Movement (`player.gd`)
-The player uses a **Velocity-Based Responsive Movement** algorithm. It prioritizes "tightness" for precise platforming.
+<details open>
+<summary><b>🛡️ Heroic Player Movement & Combat (<code>player.gd</code>)</b></summary>
+<br>
+The player uses a <strong>Velocity-Based Responsive Movement</strong> algorithm. It prioritizes "tightness" for precise platforming.
+
+<p align="center">
+  <img src="snapshots/fighting%20mechanics.png" alt="Fighting Mechanics" width="80%" style="border-radius: 8px;">
+</p>
 
 *   **Responsive Input:** Movement is calculated by mapping input axes directly to velocity.
 *   **Physics-based Jumping:** Uses a constant `JUMP_VELOCITY` with gravity integration for a natural parabolic arc.
@@ -29,25 +52,7 @@ if not is_attacking and not is_hit:
         velocity.x = move_toward(velocity.x, 0.0, SPEED * 8.0 * delta) # Friction
 ```
 
-### 2. Kuttykunjan: The Skeletal Sentinel (`kuttykunjan.gd`)
-The skeleton utilizes a **Patrol & Chase FSM (Finite State Machine)**.
-
-*   **Wander Logic:** Selects a random target coordinate within a set radius and moves at `roam_speed`.
-*   **Detection Fallback:** If the `Area2D` detection fails, a proximity-based distance check triggers the **Chase** state.
-*   **Attack Pacing:** Uses a cooldown-based trigger to ensure fire-rate balance.
-
-### 3. The Dark Lord: Main Boss (`mainboss.gd`)
-The boss implements a **Predictive Pattern AI** with an escalating difficulty curve.
-
-*   **Phase Transition:** Automatically enters **Phase 2 (Enraged)** at < 50% HP, increasing speed by 60%.
-*   **Combo System:** Tracks hit counts to cycle between a quick jab (Atk 1) and a heavy slam (Atk 2).
-*   **Lunge Mechanic:** In Phase 2, the boss calculates a vector towards the player and executes a high-velocity dash if the player attempts to keep distance.
-
----
-
-## 🔄 Dynamic Workflows (State Machines)
-
-### Player Logic Workflow
+### 🎯 Interactive Player Logic Workflow
 ```mermaid
 graph TD
     A[Idle] -->|Move Input| B[Run]
@@ -62,8 +67,37 @@ graph TD
     F -->|Timer Out| A
     F -->|HP <= 0| G[Death Sequence]
 ```
+</details>
 
-### Boss AI Logic Workflow
+---
+
+## 🧠 Dynamic Enemy AI 
+
+<details>
+<summary><b>💀 Kuttykunjan: The Skeletal Sentinel (<code>kuttykunjan.gd</code>)</b></summary>
+<br>
+The skeleton utilizes a **Patrol & Chase Finite State Machine**.
+
+*   **Wander Logic:** Selects a random target coordinate within a set radius and moves at `roam_speed`.
+*   **Detection Fallback:** If the `Area2D` detection fails, a proximity-based distance check triggers the **Chase** state.
+*   **Attack Pacing:** Uses a cooldown-based trigger to ensure fire-rate balance.
+</details>
+
+<details open>
+<summary><b>👹 The Dark Lord: Main Boss AI (<code>mainboss.gd</code>)</b></summary>
+<br>
+The boss implements a <strong>Predictive Pattern AI</strong> with an escalating difficulty curve.
+
+<div align="center">
+  <img src="snapshots/ai%20boss%20mechanics.png" alt="AI Boss Mechanics" width="48%" style="border-radius: 8px;">
+  <img src="snapshots/boss%20fight%20.png" alt="Epic Boss Fight" width="48%" style="border-radius: 8px;">
+</div>
+
+*   **Phase Transition:** Automatically enters **Phase 2 (Enraged)** at < 50% HP, increasing speed by 60%.
+*   **Combo System:** Tracks hit counts to cycle between a quick jab (Atk 1) and a heavy slam (Atk 2).
+*   **Lunge Mechanic:** In Phase 2, the boss calculates a vector towards the player and executes a high-velocity dash if the player attempts to keep distance.
+
+### 🎭 Boss Encounter Logic Flow
 ```mermaid
 graph LR
     IDLE[Idle] -->|Player Detected| CHASE[Chase]
@@ -76,22 +110,19 @@ graph LR
     ATK2 --> CHASE
     LUNGE --> CHASE
 ```
+</details>
 
 ---
 
-## 🎨 Visual Presentation Highlights
-*   **Gradients & Polish:** Every character UI uses dynamic shaders and HSL-tailored health bars.
-*   **Liquid UI:** Death screens and menus feature smooth tweens and fade transitions.
-*   **Micro-Animations:** Skeleton enemies "respawn" with a custom animation before entering their AI loop.
-
----
+<br>
 
 > [!TIP]
-> **Pro Tip for Presentation:** Open the `project.godot` and run the game directly from the `main` scene. The Boss AI is tuned to be difficult—use the "Attack 2" (G Key) for heavy damage!
+> **Pro Tip for Presentation:** Open `project.godot` and run the game directly from the `main` scene. The Boss AI is tuned to be difficult—use **Attack 2** (<kbd>G</kbd>) for heavy damage!
 
 > [!IMPORTANT]
 > This project follows the **DRY (Don't Repeat Yourself)** principle, using a centralized group-based damage handling system (`add_to_group("enemy")`).
 
----
-
-*Made with ❤️ for the Gameathon 2026*
+<div align="center">
+  <br>
+  <i>Made with ❤️ for the Gameathon 2026</i>
+</div>
